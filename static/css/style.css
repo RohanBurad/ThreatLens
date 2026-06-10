@@ -786,6 +786,8 @@ body {
 @media (max-width: 768px) {
   .hamburger { display: flex; }
   .nav-links { display: none; }
+  .nav { padding: 0 1rem; }
+  .nav-cta { font-size: 0.75rem; padding: 0.4rem 0.7rem; }
   .details-grid { grid-template-columns: 1fr; }
   .wide-card { grid-column: 1; }
   .about-grid { grid-template-columns: 1fr; }
