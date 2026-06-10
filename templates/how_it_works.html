@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>How It Works — ThreatLens</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Threat<span class="logo-dot">Lens</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/how-it-works" class="active">How It Works</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle">🌙</button>
+      <a href="/demo" class="nav-cta">Try Now →</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="hero-mesh"></div>
+  <div class="page-hero-inner reveal">
+    <div class="hero-eyebrow"><span class="dot"></span> Under the Hood</div>
+    <h1>How ThreatLens detects phishing</h1>
+    <p>A transparent look at every step — from URL input to final verdict. No black box. No guessing.</p>
+  </div>
+</section>
+
+<div class="hiw-section">
+
+  <!-- Steps -->
+  <div class="section-eyebrow">The Process</div>
+  <h2 class="section-title" style="margin-bottom:2rem;">4 steps. Instant verdict.</h2>
+
+  <div class="hiw-steps reveal-stagger">
+    <div class="hiw-step">
+      <div class="hiw-step-num">01</div>
+      <div class="hiw-step-content">
+        <h3>URL Parsing & Decomposition</h3>
+        <p>The URL is broken into its components — protocol, subdomain, domain, TLD, path, query parameters, and fragments — using Python's <code>urllib.parse</code> and <code>tldextract</code> libraries. This gives us the raw material for every check that follows.</p>
+        <div class="hiw-tags">
+          <span class="hiw-tag">urllib.parse</span>
+          <span class="hiw-tag">tldextract</span>
+          <span class="hiw-tag">regex</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hiw-step">
+      <div class="hiw-step-num">02</div>
+      <div class="hiw-step-content">
+        <h3>15+ Heuristic Signal Extraction</h3>
+        <p>Each component is analyzed for known phishing patterns. We check for IP addresses used as hostnames, suspicious TLDs, brand names in wrong positions, obfuscation techniques like hex encoding and @ symbols, excessive subdomain depth, and known phishing keywords in the URL path.</p>
+        <div class="hiw-tags">
+          <span class="hiw-tag">IP Detection</span>
+          <span class="hiw-tag">Brand Impersonation</span>
+          <span class="hiw-tag">TLD Analysis</span>
+          <span class="hiw-tag">Keyword Matching</span>
+          <span class="hiw-tag">Obfuscation Check</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hiw-step">
+      <div class="hiw-step-num">03</div>
+      <div class="hiw-step-content">
+        <h3>SSL Certificate & WHOIS Validation</h3>
+        <p>We open a real SSL handshake to the domain and inspect the certificate — checking validity, issuer, and days remaining. Simultaneously, a WHOIS lookup checks when the domain was first registered. Domains under 30 days old are a major red flag used in temporary phishing campaigns.</p>
+        <div class="hiw-tags">
+          <span class="hiw-tag">Python ssl module</span>
+          <span class="hiw-tag">python-whois</span>
+          <span class="hiw-tag">Certificate Expiry</span>
+          <span class="hiw-tag">Domain Age</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hiw-step">
+      <div class="hiw-step-num">04</div>
+      <div class="hiw-step-content">
+        <h3>Weighted Risk Scoring & Verdict</h3>
+        <p>Every signal carries a weight based on its real-world threat relevance. Brand impersonation scores +30, no HTTPS scores +20, a domain under 30 days old scores +25. All weights are summed and capped at 100. The final score maps to one of three verdicts: Safe (0–39), Suspicious (40–69), or Phishing (70–100).</p>
+        <div class="hiw-tags">
+          <span class="hiw-tag">Weighted Scoring</span>
+          <span class="hiw-tag">0–100 Scale</span>
+          <span class="hiw-tag">3-tier Verdict</span>
+          <span class="hiw-tag">PDF Report</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signals table -->
+  <div class="section-eyebrow">Detection Signals</div>
+  <h2 class="section-title" style="margin-bottom:0.5rem;">Every signal, explained</h2>
+  <p class="section-sub">These are the exact checks ThreatLens performs on every URL.</p>
+
+  <div class="signals-grid reveal-stagger">
+    <div class="signal-card">
+      <div class="sev critical">Critical</div>
+      <h4>Brand Impersonation</h4>
+      <p>Brand name (PayPal, Amazon, Google…) found in suspicious domain position.</p>
+      <div class="signal-weight">+30 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev critical">Critical</div>
+      <h4>IP Address as Host</h4>
+      <p>Legitimate sites use domain names. An IP address in the URL is a major red flag.</p>
+      <div class="signal-weight">+25 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev critical">Critical</div>
+      <h4>Domain Age &lt; 30 days</h4>
+      <p>Phishing campaigns use freshly registered domains to avoid blacklists.</p>
+      <div class="signal-weight">+25 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev high">High</div>
+      <h4>No HTTPS</h4>
+      <p>Unencrypted connections expose users to interception and credential theft.</p>
+      <div class="signal-weight">+20 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev high">High</div>
+      <h4>Suspicious TLD</h4>
+      <p>Free TLDs like .tk, .ml, .xyz, .click are disproportionately used in phishing.</p>
+      <div class="signal-weight">+20 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev high">High</div>
+      <h4>3+ Phishing Keywords</h4>
+      <p>Words like "login", "verify", "confirm", "suspended", "urgent" in the URL path.</p>
+      <div class="signal-weight">+20 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev high">High</div>
+      <h4>@ Symbol in URL</h4>
+      <p>The @ symbol tricks browsers — everything before it is ignored as credentials.</p>
+      <div class="signal-weight">+15 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev high">High</div>
+      <h4>URL Shortener</h4>
+      <p>bit.ly, tinyurl, goo.gl and others hide the real destination URL.</p>
+      <div class="signal-weight">+15 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev high">High</div>
+      <h4>Deep Subdomain (3+)</h4>
+      <p>paypal.secure.login.evil.com — legitimate brands don't need this many levels.</p>
+      <div class="signal-weight">+15 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev medium">Medium</div>
+      <h4>URL Length &gt; 100</h4>
+      <p>Very long URLs are designed to confuse users and hide the real domain.</p>
+      <div class="signal-weight">+10 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev medium">Medium</div>
+      <h4>Hex Encoding</h4>
+      <p>% encoding in URLs can be used to hide malicious characters from scanners.</p>
+      <div class="signal-weight">+10 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev medium">Medium</div>
+      <h4>Domain Age &lt; 180 days</h4>
+      <p>Relatively new domains still carry elevated risk for phishing activity.</p>
+      <div class="signal-weight">+10 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev low">Low</div>
+      <h4>Hyphen in Domain</h4>
+      <p>pay-pal-login.com style domains are common in phishing imitation attacks.</p>
+      <div class="signal-weight">+5 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev low">Low</div>
+      <h4>Digits in Domain</h4>
+      <p>paypa1.com, goog1e.com — digit substitution is a classic phishing trick.</p>
+      <div class="signal-weight">+5 points</div>
+    </div>
+    <div class="signal-card">
+      <div class="sev low">Low</div>
+      <h4>Double Slash in Path</h4>
+      <p>Can be used for open redirect attacks to send users to a different destination.</p>
+      <div class="signal-weight">+8 points</div>
+    </div>
+  </div>
+
+  <div style="margin-top:3rem;text-align:center;">
+    <a href="/demo" class="nav-cta" style="padding:0.85rem 2.5rem;font-size:1rem;border-radius:12px;">Try the Scanner →</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-bottom" style="border-top:1px solid var(--border);padding-top:1.5rem;">
+    <p>© 2025 ThreatLens · Built by Rohan Burad · IBM CSRBOX Cybersecurity Internship</p>
+    <p>For educational purposes only.</p>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

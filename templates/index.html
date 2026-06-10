@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ThreatLens — Phishing URL Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Threat<span class="logo-dot">Lens</span></a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/how-it-works">How It Works</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+      <a href="/demo" class="nav-cta">Try Now →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Threat ticker -->
+<div class="ticker-section">
+  <div class="ticker-track" id="ticker">
+    <span class="ticker-item">🚨 1.4M phishing sites detected daily</span>
+    <span class="ticker-item">⚠️ 36% of data breaches involve phishing</span>
+    <span class="ticker-item">🔴 New phishing domain every 20 seconds</span>
+    <span class="ticker-item">💀 $4.91M average cost of a phishing breach</span>
+    <span class="ticker-item">🎯 83% of organizations hit by phishing in 2023</span>
+    <span class="ticker-item">🛡️ ThreatLens analyzes 15+ risk signals instantly</span>
+    <span class="ticker-item">🚨 1.4M phishing sites detected daily</span>
+    <span class="ticker-item">⚠️ 36% of data breaches involve phishing</span>
+    <span class="ticker-item">🔴 New phishing domain every 20 seconds</span>
+    <span class="ticker-item">💀 $4.91M average cost of a phishing breach</span>
+    <span class="ticker-item">🎯 83% of organizations hit by phishing in 2023</span>
+    <span class="ticker-item">🛡️ ThreatLens analyzes 15+ risk signals instantly</span>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span class="dot"></span> Real-time URL Threat Detection</div>
+    <h1 class="hero-title">
+      Don't click <span class="strike">blindly</span><br/>
+      <span class="safe-word">Scan before you land.</span>
+    </h1>
+    <p class="hero-sub">ThreatLens analyzes any URL in seconds — checking 15+ threat signals including SSL certificates, domain age, brand impersonation, and phishing patterns.</p>
+
+    <div class="search-box">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔗</span>
+        <input type="text" id="urlInput" class="search-input"
+               placeholder="Paste any URL — e.g. http://paypa1-login.tk/verify"
+               autocomplete="off" spellcheck="false"/>
+        <button class="search-clear" id="clearBtn">✕</button>
+      </div>
+      <button class="analyze-btn" id="analyzeBtn">
+        <span class="btn-text">Scan URL</span>
+        <span class="btn-loader hidden"><span class="spinner"></span> Scanning…</span>
+      </button>
+    </div>
+
+    <div class="sample-urls">
+      <span class="sample-label">Try a sample:</span>
+      <button class="sample-chip" data-url="http://paypa1-secure-login.tk/verify/account?confirm=true">Phishing sample</button>
+      <button class="sample-chip" data-url="https://github.com/torvalds/linux">Safe site</button>
+      <button class="sample-chip" data-url="http://192.168.1.1/admin/login">IP-based URL</button>
+    </div>
+  </div>
+</section>
+
+<!-- Result Section -->
+<section class="result-section hidden" id="resultSection">
+  <div class="result-inner">
+    <div class="verdict-card" id="verdictCard">
+      <div class="verdict-left">
+        <div class="verdict-icon" id="verdictIcon">—</div>
+        <div>
+          <div class="verdict-label" id="verdictLabel">—</div>
+          <div class="verdict-url" id="verdictUrl">—</div>
+        </div>
+      </div>
+      <div class="verdict-right">
+        <div class="score-ring-wrap">
+          <svg class="score-ring" viewBox="0 0 80 80">
+            <circle class="ring-bg" cx="40" cy="40" r="32"/>
+            <circle class="ring-fill" id="ringFill" cx="40" cy="40" r="32" stroke-dasharray="201" stroke-dashoffset="201"/>
+          </svg>
+          <div class="score-center">
+            <span class="score-num" id="scoreNum">0</span>
+            <span class="score-sub">/ 100</span>
+          </div>
+        </div>
+        <div class="score-legend">Risk Score</div>
+      </div>
+    </div>
+
+    <div class="details-grid">
+      <div class="card">
+        <div class="card-header"><span class="card-icon">⚠️</span><h3>Risk Factors</h3><span class="card-count" id="riskCount">0</span></div>
+        <div class="card-body" id="riskList"><div class="empty-state">No risk factors detected</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-icon">✅</span><h3>Positive Signals</h3><span class="card-count safe" id="positiveCount">0</span></div>
+        <div class="card-body" id="positiveList"><div class="empty-state">No positive signals</div></div>
+      </div>
+      <div class="card wide-card">
+        <div class="card-header"><span class="card-icon">🔬</span><h3>Technical Breakdown</h3></div>
+        <div class="tech-grid" id="techGrid"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-icon">🔒</span><h3>SSL Certificate</h3></div>
+        <div class="card-body" id="sslInfo">—</div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-icon">📅</span><h3>Domain Age</h3></div>
+        <div class="card-body" id="domainInfo">—</div>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button class="action-btn primary" id="downloadReport">📄 Download PDF Report</button>
+      <button class="action-btn secondary" id="analyzeAnother">🔄 Scan Another URL</button>
+    </div>
+  </div>
+</section>
+
+<!-- Stats bar -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">15+</div><div class="stat-lbl">Detection Signals</div></div>
+  <div class="stat-item"><div class="stat-num">3s</div><div class="stat-lbl">Avg Scan Time</div></div>
+  <div class="stat-item"><div class="stat-num">100%</div><div class="stat-lbl">Free to Use</div></div>
+  <div class="stat-item"><div class="stat-num">PDF</div><div class="stat-lbl">Report Export</div></div>
+</div>
+
+<!-- Features -->
+<section class="features-section">
+  <div class="section-eyebrow">Why ThreatLens</div>
+  <h2 class="section-title">Everything a threat needs to hide.<br/>Everything we need to find it.</h2>
+  <p class="section-sub">Built with real cybersecurity principles — not just a keyword checker.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🔍</div>
+      <h3>15+ Heuristic Signals</h3>
+      <p>URL length, subdomain depth, IP detection, hex encoding, brand impersonation, suspicious TLDs and more — all checked simultaneously.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>SSL Certificate Check</h3>
+      <p>Verifies certificate validity, issuer credibility, and expiration date in real time using Python's SSL module.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📅</div>
+      <h3>Domain Age via WHOIS</h3>
+      <p>Newly registered domains are a major red flag. We check registration date and flag anything under 30 days old.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>Brand Impersonation</h3>
+      <p>Detects when attackers use PayPal, Amazon, Google, Apple, and other brand names in suspicious domain positions.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Risk Score 0–100</h3>
+      <p>Every signal contributes a weighted score. The final verdict — Safe, Suspicious, or Phishing — is always explainable.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📄</div>
+      <h3>PDF Report Export</h3>
+      <p>Download a professional threat analysis report with every signal, score, and recommendation clearly documented.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>A suspicious URL is one click away from disaster.</h2>
+  <p>Scan it with ThreatLens before you regret it.</p>
+  <a href="/demo" class="cta-btn-white">Start Scanning Free →</a>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo">Threat<span class="logo-dot">Lens</span></a>
+      <p>A cybersecurity tool built to detect phishing URLs using real-time heuristic analysis, SSL validation, and WHOIS lookup.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Pages</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/demo">Demo</a></li>
+        <li><a href="/how-it-works">How It Works</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Built With</h4>
+      <ul>
+        <li><a href="#">Python + Flask</a></li>
+        <li><a href="#">TLDExtract</a></li>
+        <li><a href="#">Python-WHOIS</a></li>
+        <li><a href="#">ReportLab</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 ThreatLens · Built by Rohan Burad · IBM CSRBOX Cybersecurity Internship</p>
+    <p>For educational purposes only.</p>
+  </div>
+</footer>
+
+<div class="error-toast hidden" id="errorToast">
+  <span>❌</span><span id="errorMsg">Something went wrong.</span>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

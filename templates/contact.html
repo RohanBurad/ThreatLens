@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact — ThreatLens</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="preconnect" href="https://googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Threat<span class="logo-dot">Lens</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/how-it-works">How It Works</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact" class="active">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle">🌙</button>
+      <a href="/demo" class="nav-cta">Try Now →</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="hero-mesh"></div>
+  <div class="page-hero-inner reveal">
+    <div class="hero-eyebrow"><span class="dot"></span> Get In Touch</div>
+    <h1>Contact & Feedback</h1>
+    <p>Found a bug? Want to report a phishing URL? Have feedback? We'd love to hear from you.</p>
+  </div>
+</section>
+
+<div class="contact-section">
+  <div class="contact-grid">
+
+    <!-- Form -->
+    <div class="contact-form-wrap reveal-left">
+      <h2>Send us a message</h2>
+      <p>Fill in the form below — your message goes straight to our inbox.</p>
+
+      <div class="form-group">
+        <label class="form-label">Your Name *</label>
+        <input type="text" class="form-input" id="cName" placeholder="e.g. Rahul Sharma"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input type="email" class="form-input" id="cEmail" placeholder="your@email.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message Type</label>
+        <select class="form-select" id="cType">
+          <option value="feedback">💬 General Feedback</option>
+          <option value="report">🚨 Report a Phishing URL</option>
+          <option value="bug">🐛 Bug Report</option>
+          <option value="suggestion">💡 Feature Suggestion</option>
+          <option value="other">📩 Other</option>
+        </select>
+      </div>
+      <div class="form-group" id="urlGroup" style="display:none;">
+        <label class="form-label">Suspicious URL (if reporting)</label>
+        <input type="text" class="form-input" id="cUrl" placeholder="http://suspicious-url.com..."/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message *</label>
+        <textarea class="form-textarea" id="cMessage" placeholder="Describe your feedback, report, or suggestion in detail…"></textarea>
+      </div>
+
+      <button class="form-submit" id="contactSubmit">Send Message →</button>
+      <div class="form-success hidden" id="formSuccess">
+        ✅ Message sent! Opening your email client…
+      </div>
+    </div>
+
+    <!-- Info + Map -->
+    <div class="contact-info-wrap reveal-right">
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon">📍</div>
+        <div>
+          <h4>Headquarters</h4>
+          <p>Aditya Silver Oak Institute of Technology<br/>Nr. Bhavik Petrol Pump, Gota, Ahmedabad, Gujarat 382481</p>
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon">✉️</div>
+        <div>
+          <h4>Email</h4>
+          <a href="mailto:2402022000004@silveroakuni.ac.in">2402022000004@silveroakuni.ac.in</a>
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon">🏢</div>
+        <div>
+          <h4>Internship</h4>
+          <p>IBM CSRBOX Cybersecurity Program<br/>Batch 2025</p>
+        </div>
+      </div>
+
+      <div class="contact-info-card">
+        <div class="contact-info-icon">⏰</div>
+        <div>
+          <h4>Response Time</h4>
+          <p>Usually within 24–48 hours.<br/>For urgent reports, email directly.</p>
+        </div>
+      </div>
+
+      <!-- Leaflet Threat Heatmap -->
+      <div class="map-wrap">
+        <div id="threatHeatmap" style="height:350px; border-radius:12px; z-index:1;"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-bottom" style="border-top:1px solid var(--border);padding-top:1.5rem;">
+    <p>© 2025 ThreatLens · Built by Rohan Burad · IBM CSRBOX Cybersecurity Internship</p>
+    <p>For educational purposes only.</p>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+  /* ── Form: show/hide URL field ── */
+  document.getElementById('cType').addEventListener('change', function() {
+    document.getElementById('urlGroup').style.display = this.value === 'report' ? 'block' : 'none';
+  });
+
+  /* ── Form: submit via mailto ── */
+  document.getElementById('contactSubmit').addEventListener('click', function() {
+    const name     = document.getElementById('cName').value.trim();
+    const email    = document.getElementById('cEmail').value.trim();
+    const type     = document.getElementById('cType');
+    const typeText = type.options[type.selectedIndex].text;
+    const url      = document.getElementById('cUrl').value.trim();
+    const message  = document.getElementById('cMessage').value.trim();
+
+    if (!name || !email || !message) {
+      alert('Please fill in Name, Email, and Message.');
+      return;
+    }
+
+    const subject = encodeURIComponent(`ThreatLens — ${typeText}`);
+    let body = `Name: ${name}\nEmail: ${email}\nType: ${typeText}\n`;
+    if (url) body += `Suspicious URL: ${url}\n`;
+    body += `\nMessage:\n${message}`;
+
+    window.location.href = `mailto:2402022000004@silveroakuni.ac.in?subject=${subject}&body=${encodeURIComponent(body)}`;
+
+    document.getElementById('formSuccess').classList.remove('hidden');
+    setTimeout(() => document.getElementById('formSuccess').classList.add('hidden'), 6000);
+  });
+  /* ── Leaflet Clean Marker Map ── */
+  (function () {
+    const CENTER = [23.0917, 72.5349];
+
+    const TILES = {
+      light: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      dark:  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+    };
+    const ATTRIBUTION = '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+    const getTheme = () => document.documentElement.getAttribute('data-theme') || 'light';
+
+    const map = L.map('threatHeatmap', { zoomControl: true, scrollWheelZoom: false })
+              .setView(CENTER, 13);  // 16 → 15
+
+    setTimeout(() => map.invalidateSize(), 300);
+
+    const tileLayer = L.tileLayer(TILES[getTheme()], {
+      attribution: ATTRIBUTION,
+      maxZoom: 19,
+      subdomains: 'abcd'
+    }).addTo(map);
+
+    /* ── Pulsing marker ── */
+    const pulseIcon = L.divIcon({
+      className: '',
+      html: `
+        <div style="position:relative; width:40px; height:40px;">
+          <div style="
+            position:absolute; top:50%; left:50%;
+            transform:translate(-50%,-50%);
+            width:40px; height:40px;
+            border-radius:50%;
+            background:rgba(225,29,72,0.25);
+            animation: pulseRing 1.6s ease-out infinite;
+          "></div>
+          <div style="
+            position:absolute; top:50%; left:50%;
+            transform:translate(-50%,-50%);
+            width:24px; height:24px;
+            border-radius:50%;
+            background:rgba(225,29,72,0.45);
+            animation: pulseRing 1.6s ease-out infinite 0.4s;
+          "></div>
+          <div style="
+            position:absolute; top:50%; left:50%;
+            transform:translate(-50%,-50%);
+            width:14px; height:14px;
+            border-radius:50%;
+            background:#e11d48;
+            box-shadow: 0 0 0 2px white;
+          "></div>
+        </div>`,
+      iconSize: [40, 40],
+      iconAnchor: [20, 20],
+      popupAnchor: [0, -22]
+    });
+
+    /* Inject keyframe animation once */
+    if (!document.getElementById('pulse-style')) {
+      const style = document.createElement('style');
+      style.id = 'pulse-style';
+      style.textContent = `
+        @keyframes pulseRing {
+          0%   { transform: translate(-50%,-50%) scale(0.8); opacity:1; }
+          100% { transform: translate(-50%,-50%) scale(2.2); opacity:0; }
+        }`;
+      document.head.appendChild(style);
+    }
+
+    L.marker(CENTER, { icon: pulseIcon })
+      .addTo(map)
+      .bindPopup('<b>ThreatLens HQ</b><br>Silver Oak University Campus.')
+      .openPopup();
+
+    document.getElementById('themeToggle').addEventListener('click', function () {
+      setTimeout(() => {
+        tileLayer.setUrl(TILES[getTheme()]);
+      }, 50);
+    });
+  })();
+</script>
+</body>
+</html>

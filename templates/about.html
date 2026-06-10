@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — ThreatLens</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Threat<span class="logo-dot">Lens</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/how-it-works">How It Works</a></li>
+      <li><a href="/about" class="active">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle">🌙</button>
+      <a href="/demo" class="nav-cta">Try Now →</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="hero-mesh"></div>
+  <div class="page-hero-inner reveal">
+    <div class="hero-eyebrow"><span class="dot"></span> The Developer</div>
+    <h1>Behind ThreatLens</h1>
+    <p>Built by a developer who believes cybersecurity tools should be open, explainable, and accessible to everyone.</p>
+  </div>
+</section>
+
+<div class="about-section">
+  <div class="about-grid">
+
+    <!-- Left: photo -->
+    <div class="about-photo-wrap reveal-left">
+      <div class="about-photo">
+        <img src="{{ url_for('static', filename='img/mypic.png') }}"
+             alt="Rohan Burad"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <span style="display:none;font-size:5rem;align-items:center;justify-content:center;width:100%;height:100%;">👤</span>
+      </div>
+    </div>
+
+    <!-- Right: bio -->
+    <div class="about-content reveal-right">
+      <div class="about-name">Rohan Burad</div>
+      <div class="about-role">Web Developer & AI/ML Student</div>
+      <div class="about-org">IBM CSRBOX Cybersecurity Intern · Aditya Silver Oak Institute of Technology</div>
+
+      <p class="about-bio">
+        "A passionate Web Developer and AI/ML enthusiast currently interning at IBM CSRBOX, building real-world cybersecurity tools. ThreatLens is my attempt to make the internet a safer place — one URL at a time."
+      </p>
+
+      <div class="about-skills-title">Tech Stack & Skills</div>
+      <div class="skills-grid reveal-stagger">
+        <span class="skill-pill">Python</span>
+        <span class="skill-pill">Flask</span>
+        <span class="skill-pill">HTML</span>
+        <span class="skill-pill">CSS</span>
+        <span class="skill-pill">JavaScript</span>
+        <span class="skill-pill">Java</span>
+        <span class="skill-pill">Cybersecurity</span>
+        <span class="skill-pill">AI / ML</span>
+        <span class="skill-pill">REST APIs</span>
+        <span class="skill-pill">Git</span>
+        <span class="skill-pill">...and learning more</span>
+      </div>
+
+      <div class="about-project reveal">
+        <h3>🛡️ About ThreatLens</h3>
+        <p style="margin-top:0.5rem;">ThreatLens was built as part of a 15-day IBM CSRBOX Cybersecurity Internship. The goal was to create a tool that doesn't just detect phishing URLs — but <strong>explains why</strong> a URL is dangerous, making it educational for both security professionals and everyday users.</p>
+        <p style="margin-top:0.75rem;">The tool uses Python Flask as the backend, analyzes 15+ heuristic signals, validates SSL certificates in real time, and checks domain registration age via WHOIS — all without relying on paid APIs.</p>
+      </div>
+
+      <div style="margin-top:2rem;" class="reveal">
+        <div class="about-skills-title">Internship Timeline</div>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;margin-top:0.75rem;">
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);margin-top:5px;min-width:10px;"></div>
+            <div><strong style="font-size:0.88rem;">Days 1–3</strong> <span style="font-size:0.83rem;color:var(--text2);">— URL parsing, feature extraction, heuristic engine</span></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);margin-top:5px;min-width:10px;"></div>
+            <div><strong style="font-size:0.88rem;">Days 4–6</strong> <span style="font-size:0.83rem;color:var(--text2);">— SSL validation, WHOIS integration, risk scoring</span></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);margin-top:5px;min-width:10px;"></div>
+            <div><strong style="font-size:0.88rem;">Days 7–10</strong> <span style="font-size:0.83rem;color:var(--text2);">— Flask web app, PDF report generator, UI design</span></div>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <div style="width:10px;height:10px;border-radius:50%;background:var(--safe);margin-top:5px;min-width:10px;"></div>
+            <div><strong style="font-size:0.88rem;">Days 11–13</strong> <span style="font-size:0.83rem;color:var(--text2);">— Multi-page UI, dark/light mode, testing & documentation</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cta-section reveal">
+  <h2>Want to see ThreatLens in action?</h2>
+  <p>Scan any URL and get a full threat analysis report in seconds.</p>
+  <a href="/demo" class="cta-btn-white">Try the Demo →</a>
+</section>
+
+<footer class="footer">
+  <div class="footer-bottom" style="border-top:1px solid var(--border);padding-top:1.5rem;">
+    <p>© 2025 ThreatLens · Built by Rohan Burad · IBM CSRBOX Cybersecurity Internship</p>
+    <p>For educational purposes only.</p>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
