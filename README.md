@@ -11,7 +11,7 @@
 
 ## 🌐 Live Demo
 
-**👉 [https://threatlens-i74k.onrender.com](https://threatlens-i74k.onrender.com)**
+**👉 [https://threat-lens-swart.vercel.app/](https://threat-lens-swart.vercel.app/)**
 
 ---
 
